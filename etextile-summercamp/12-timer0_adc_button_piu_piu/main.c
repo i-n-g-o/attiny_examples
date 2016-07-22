@@ -17,7 +17,7 @@
 #include <math.h>
 
 // prescaler for timer0 - sets frequency range
-#define TIMER0_DIV (_BV(CS01) | _BV(CS00)) // clk_io/16
+#define TIMER0_DIV ((1 << CS01) | (1 << CS00)) // clk_io/16
 #define TIMER0_DIV_MASK 7 // prescaler mask 0b00000111
 
 // initial value for timer1
@@ -31,49 +31,49 @@ volatile uint8_t counter_max = 0;
 void pinSetup() {
 	//--------------------------------
 	// pin setup
-	DDRB = ~(_BV(PB2) | _BV(PB3)); // PB2 (INT0) as input
-	PORTB = _BV(PB2) | _BV(PB3); // turn on pullup
+	DDRB = ~((1 << PB2) | (1 << PB3)); // PB2 (INT0) as input
+	PORTB = (1 << PB2) | (1 << PB3); // turn on pullup
 }
 
 void setupInterrupt() {
 	
 	//--------------------------------
 	// turn on interrupts
-	GIMSK |= _BV(INT0); // Turn on External Interrupt Request 0
+	GIMSK |= (1 << INT0); // Turn on External Interrupt Request 0
 	
 	//--------------------------------
 	// set Interrupt Sense Control 0 Bit 1 and Bit 0 (for ISR0)
 	// interrupt on falling edge
-	MCUCR |= _BV(ISC01);
-	MCUCR &= ~_BV(ISC00);
+	MCUCR |= (1 << ISC01);
+	MCUCR &= ~(1 << ISC00);
 }
 
 void setupADC() {
 	
 	//--------------------------------
 	// select ADC3 (PB3)
-	ADMUX &= ~(_BV(MUX3) | _BV(MUX2));
-	ADMUX |= _BV(MUX1) | _BV(MUX0);
+	ADMUX &= ~((1 << MUX3) | (1 << MUX2));
+	ADMUX |= (1 << MUX1) | (1 << MUX0);
 	
 	//--------------------------------
 	// VCC used as Voltage Reference
-	ADMUX &= ~(_BV(REFS0) | _BV(REFS2) | _BV(REFS1));
+	ADMUX &= ~((1 << REFS0) | (1 << REFS2) | (1 << REFS1));
 	
 	//--------------------------------
 	// ADLAR: ADC Left Adjust Result
 	// select right aligned
-	ADMUX &= ~(_BV(ADLAR));
+	ADMUX &= ~((1 << ADLAR));
 	
 	//--------------------------------
 	// ACME: Analog Comparator Multiplexer Enable
 	// set ACME to 1 to select ADCx
-	ADCSRB |= _BV(ACME);
+	ADCSRB |= (1 << ACME);
 	
 	//--------------------------------
 	// diable autotrigger
-	ADCSRA &= ~_BV(ADATE);
+	ADCSRA &= ~(1 << ADATE);
 	// enable ADC interrupt
-	ADCSRA &= ~_BV(ADIE);
+	ADCSRA &= ~(1 << ADIE);
 	
 	//--------------------------------
 	// ADC clock prescaler /8
@@ -96,14 +96,14 @@ uint16_t readADC() {
 void timer0Setup() {
 	//--------------------------------
 	// CTC mode - counting direction up
-	TCCR0B &= ~_BV(WGM02);
-	TCCR0A &= ~_BV(WGM00);
-	TCCR0A |= _BV(WGM01);
+	TCCR0B &= ~(1 << WGM02);
+	TCCR0A &= ~(1 << WGM00);
+	TCCR0A |= (1 << WGM01);
 	
 	//--------------------------------
 	// toggle pin OC0A on compare match
-	TCCR0A &= ~_BV(COM0A1);
-	TCCR0A |= _BV(COM0A0);
+	TCCR0A &= ~(1 << COM0A1);
+	TCCR0A |= (1 << COM0A0);
 	
 	//--------------------------------
 	// set prescaler
@@ -115,25 +115,25 @@ void timer0Setup() {
 	
 	//--------------------------------
 	// enable output compare match
-	TIMSK |= _BV(OCIE0A);
+	TIMSK |= (1 << OCIE0A);
 }
 
 
 void timer1Setup() {
 	//--------------------------------
 	// don't cleare on compare match
-	TCCR1 &= ~_BV(CTC1);
+	TCCR1 &= ~(1 << CTC1);
 	// disable PWM
-	TCCR1 &= ~_BV(PWM1A);
+	TCCR1 &= ~(1 << PWM1A);
 	
 	//--------------------------------
 	// set prescaler - make it slow (PCK/16384)
-	TCCR1 |= _BV(CS13) | _BV(CS11) | _BV(CS12) | _BV(CS10);
+	TCCR1 |= (1 << CS13) | (1 << CS11) | (1 << CS12) | (1 << CS10);
 	
 	//--------------------------------
 	// toggle OC1A: PB1
-	TCCR1 &= ~_BV(COM1A1);
-	TCCR1 |= _BV(COM1A0);
+	TCCR1 &= ~(1 << COM1A1);
+	TCCR1 |= (1 << COM1A0);
 	
 	//--------------------------------
 	// preload timer value
@@ -141,11 +141,11 @@ void timer1Setup() {
 	
 	//--------------------------------
 	// disable output compare match
-	TIMSK &= ~(_BV(OCIE1A) | _BV(OCIE1B));
+	TIMSK &= ~((1 << OCIE1A) | (1 << OCIE1B));
 	
 	//--------------------------------
 	// enable overflow interrupt
-	TIMSK |= _BV(TOIE1);
+	TIMSK |= (1 << TOIE1);
 }
 
 

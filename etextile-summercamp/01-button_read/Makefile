@@ -18,11 +18,12 @@
 # FUSES ........ Parameters for avrdude to flash the fuses appropriately.
 
 DEVICE     = attiny45
-CLOCK      = 1000000
-PROGRAMMER = -c usbtiny -P usb
+#DEVICE     = atmega8
+CLOCK      = 8000000
+PROGRAMMER = #-c stk500v2 -P avrdoper
 OBJECTS    = main.o
-FUSES      = -U lfuse:w:0x62:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
-# fuse settings as taken from http://www.engbedded.com/fusecalc/
+FUSES      = -U hfuse:w:0xdf:m -U lfuse:w:0xe2:m
+#FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m
 
 # Attiny45:
 # Fuse high byte:

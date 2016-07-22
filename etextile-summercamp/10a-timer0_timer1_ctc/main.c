@@ -15,7 +15,7 @@
 #include <avr/interrupt.h>
 
 // prescaler for timer0 - sets frequency range
-#define TIMER0_DIV (_BV(CS01) | _BV(CS00)) // clk_io/16
+#define TIMER0_DIV ((1 << CS01) | (1 << CS00)) // clk_io/16
 #define TIMER0_DIV_MASK 7 // prescaler mask 0b00000111
 
 // initial value for timer1
@@ -35,18 +35,18 @@ void pinSetup() {
 void timer0Setup() {
 	//--------------------------------
 	// CTC mode - counting direction up
-	TCCR0B &= ~_BV(WGM02);
-	TCCR0A &= ~_BV(WGM00);
-	TCCR0A |= _BV(WGM01);
+	TCCR0B &= ~(1 << WGM02);
+	TCCR0A &= ~(1 << WGM00);
+	TCCR0A |= (1 << WGM01);
 	
 	//--------------------------------
 	// toggle pin OC0A on compare match
-	TCCR0A &= ~_BV(COM0A1);
-	TCCR0A |= _BV(COM0A0);
+	TCCR0A &= ~(1 << COM0A1);
+	TCCR0A |= (1 << COM0A0);
 	
 	//--------------------------------
 	// set prescaler
-	TCCR0B |= _BV(CS01) | _BV(CS00); // clk_io/16
+	TCCR0B |= (1 << CS01) | (1 << CS00); // clk_io/16
 	
 	//--------------------------------
 	// init OCR0A
@@ -54,33 +54,33 @@ void timer0Setup() {
 	
 	//--------------------------------
 	// enable output compare match
-	TIMSK |= _BV(OCIE0A);
+	TIMSK |= (1 << OCIE0A);
 }
 
 
 void timer1Setup() {
 	//--------------------------------
 	// don't cleare on compare match
-	TCCR1 &= ~_BV(CTC1);
+	TCCR1 &= ~(1 << CTC1);
 	// disable PWM
-	TCCR1 &= ~_BV(PWM1A);
+	TCCR1 &= ~(1 << PWM1A);
 	
 	//--------------------------------
 	// set prescaler - make it slow (PCK/16384)
-	TCCR1 |= _BV(CS13) | _BV(CS11) | _BV(CS12) | _BV(CS10);
+	TCCR1 |= (1 << CS13) | (1 << CS11) | (1 << CS12) | (1 << CS10);
 	
 	//--------------------------------
 	// toggle OC1A: PB1
-	TCCR1 &= ~_BV(COM1A1);
-	TCCR1 |= _BV(COM1A0);
+	TCCR1 &= ~(1 << COM1A1);
+	TCCR1 |= (1 << COM1A0);
 	
 	//--------------------------------
 	// disable output compare match
-	TIMSK &= ~(_BV(OCIE1A) | _BV(OCIE1B));
+	TIMSK &= ~((1 << OCIE1A) | (1 << OCIE1B));
 	
 	//--------------------------------
 	// enable overflow interrupt
-	TIMSK |= _BV(TOIE1);
+	TIMSK |= (1 << TOIE1);
 }
 
 

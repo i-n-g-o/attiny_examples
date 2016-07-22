@@ -19,36 +19,36 @@
 void pinSetup() {
 	//--------------------------------
 	// pin setup
-	DDRB = ~_BV(PB3); // PB2 (INT0) as input
-	PORTB = _BV(PB3); // turn on pullup
+	DDRB = ~(1 << PB3); // PB2 (INT0) as input
+	PORTB = (1 << PB3); // turn on pullup
 }
 
 void setupADC() {
 	
 	//--------------------------------
 	// select ADC3 (PB3)
-	ADMUX &= ~(_BV(MUX3) | _BV(MUX2));
-	ADMUX |= _BV(MUX1) | _BV(MUX0);
+	ADMUX &= ~((1 << MUX3) | (1 << MUX2));
+	ADMUX |= (1 << MUX1) | (1 << MUX0);
 	
 	//--------------------------------
 	// VCC used as Voltage Reference
-	ADMUX &= ~(_BV(REFS0) | _BV(REFS2) | _BV(REFS1));
+	ADMUX &= ~((1 << REFS0) | (1 << REFS2) | (1 << REFS1));
 	
 	//--------------------------------
 	// ADLAR: ADC Left Adjust Result
 	// select right aligned
-	ADMUX &= ~(_BV(ADLAR));
+	ADMUX &= ~((1 << ADLAR));
 	
 	//--------------------------------
 	// ACME: Analog Comparator Multiplexer Enable
 	// set ACME to 1 to select ADCx
-	ADCSRB |= _BV(ACME);
+	ADCSRB |= (1 << ACME);
 	
 	//--------------------------------
 	// diable autotrigger
-	ADCSRA &= ~_BV(ADATE);
+	ADCSRA &= ~(1 << ADATE);
 	// enable ADC interrupt
-	ADCSRA &= ~_BV(ADIE);
+	ADCSRA &= ~(1 << ADIE);
 	
 	//--------------------------------
 	// ADC clock prescaler /8
@@ -72,18 +72,18 @@ uint16_t readADC() {
 void timer0Setup() {
 	//--------------------------------
 	// CTC mode - counting direction up
-	TCCR0B &= ~_BV(WGM02);
-	TCCR0A &= ~_BV(WGM00);
-	TCCR0A |= _BV(WGM01);
+	TCCR0B &= ~(1 << WGM02);
+	TCCR0A &= ~(1 << WGM00);
+	TCCR0A |= (1 << WGM01);
 	
 	//--------------------------------
 	// toggle pin OC0A on compare match
-	TCCR0A &= ~_BV(COM0A1);
-	TCCR0A |= _BV(COM0A0);
+	TCCR0A &= ~(1 << COM0A1);
+	TCCR0A |= (1 << COM0A0);
 	
 	//--------------------------------
 	// set prescaler
-	TCCR0B |= _BV(CS01) | _BV(CS00); // clk_io/16
+	TCCR0B |= (1 << CS01) | (1 << CS00); // clk_io/16
 	
 	//--------------------------------
 	// init OCR0A - set frequency
@@ -91,7 +91,7 @@ void timer0Setup() {
 	
 	//--------------------------------
 	// enable output compare match
-	TIMSK |= _BV(OCIE0A);
+	TIMSK |= (1 << OCIE0A);
 }
 
 

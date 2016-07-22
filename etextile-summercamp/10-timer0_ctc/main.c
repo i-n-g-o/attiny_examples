@@ -25,18 +25,18 @@ void pinSetup() {
 void timer0Setup() {
 	//--------------------------------
 	// CTC mode - counting direction up
-	TCCR0B &= ~_BV(WGM02);
-	TCCR0A &= ~_BV(WGM00);
-	TCCR0A |= _BV(WGM01);
+	TCCR0B &= ~(1 << WGM02);
+	TCCR0A &= ~(1 << WGM00);
+	TCCR0A |= (1 << WGM01);
 	
 	//--------------------------------
 	// toggle pin OC0A on compare match
-	TCCR0A &= ~_BV(COM0A1);
-	TCCR0A |= _BV(COM0A0);
+	TCCR0A &= ~(1 << COM0A1);
+	TCCR0A |= (1 << COM0A0);
 	
 	//--------------------------------
 	// set prescaler
-	TCCR0B |= _BV(CS01) | _BV(CS00); // clk_io/16
+	TCCR0B |= (1 << CS01) | (1 << CS00); // clk_io/16
 	
 	//--------------------------------
 	// init OCR0A - set frequency
@@ -44,7 +44,7 @@ void timer0Setup() {
 	
 	//--------------------------------
 	// enable output compare match
-	TIMSK |= _BV(OCIE0A);
+	TIMSK |= (1 << OCIE0A);
 }
 
 
