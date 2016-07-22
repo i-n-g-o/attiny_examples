@@ -1,11 +1,11 @@
 
-// Blinking With Delay on the ATtiny45
+// Blinking Without Using Delay on the ATtiny45
 
 //                                     --------
-//        (PCINT5/!RESET/ADC0/dW) PB5 -|     |- VCC
-// (PCINT3/XTAL1/CLKI/!OC1B/ADC3) PB3 -|     |- PB2 (SCK/USCK/SCL/ADC1/T0/INT0/PCINT2)
-//  (PCINT4/XTAL2/CLKO/OC1B/ADC2) PB4 -|     |- PB1 (MISO/DO/AIN1/OC0B/OC1A/PCINT1)                               
-//                                GND -|     |- PB0 (MOSI/DI/SDA/AIN0/OC0A/!OC1A/AREF/PCINT0)
+//                                PB5 -|     |- VCC
+//                                PB3 -|     |- PB2 
+//                                PB4 -|     |- PB1                               
+//                                GND -|     |- PB0 ------- to LED
 //                                     --------
 
 
