@@ -26,7 +26,7 @@ int main(void) {
   // ------ Event loop ------ //
   while (1) {
     // check if pin is high
-    if( PINB & (1<<PB1) == 0) {           
+    if( (PINB & (1<<PB1)) == 0) {           
       // Turn on first LED bit/pin in PORTB 
       PORTB |= (1 << PB0); 
       // wait          
