@@ -20,7 +20,7 @@
 DEVICE     = attiny45
 #DEVICE     = atmega8
 CLOCK      = 8000000
-PROGRAMMER = #-c stk500v2 -P avrdoper
+PROGRAMMER = -c usbtiny -P usb
 OBJECTS    = main.o
 FUSES      = -U hfuse:w:0xdf:m -U lfuse:w:0xe2:m
 #FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m
