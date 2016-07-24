@@ -34,6 +34,7 @@ void timer0Setup() {
 	//--------------------------------
 	// set prescaler
 	TCCR0B |= (1 << CS02) | (1 << CS00); // clk_io/1024
+	TCCR0B &= ~(1 << CS01);
 	
 	//--------------------------------
 	// preload timer counter
